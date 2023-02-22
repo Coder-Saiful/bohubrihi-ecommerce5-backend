@@ -199,7 +199,7 @@ module.exports.filterProducts = async (req, res) => {
         if (products.length > 0) {
             return res.status(200).send(products);
         } else {
-            return res.status(200).send({message: "No product available!"});
+            return res.status(200).send({message: "No product available."});
         }
     } catch (error) {
         return res.status(400).send({ message: "Failed to fetch products!" });
