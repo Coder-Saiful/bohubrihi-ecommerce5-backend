@@ -1,6 +1,6 @@
 const {Schema, model} = require('mongoose');
 
-module.exports.Profile = Schema({
+module.exports.Profile = model('Profile', Schema({
     user: {
         type: Schema.Types.ObjectId,
         unique: true,
@@ -14,4 +14,4 @@ module.exports.Profile = Schema({
     state: String,
     postcode: Number,
     country: String
-}, {timestamps: true});
+}, {timestamps: true}));
