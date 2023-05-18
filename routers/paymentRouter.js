@@ -4,12 +4,12 @@ const router = require('express').Router();
 
 router.get('/', authorize, initPayment);
 
-router.get('/ipn', ipn);
+router.post('/ipn', ipn);
 
-router.get('/success', paymentSuccess);
+router.post('/success', paymentSuccess);
 
-router.get('/fail', paymentFail);
+router.post('/fail', paymentFail);
 
-router.get('/cancel', paymentCancel);
+router.post('/cancel', paymentCancel);
 
 module.exports = router;
