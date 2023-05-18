@@ -86,13 +86,16 @@ module.exports.ipn = async (req, res) => {
 }
 
 module.exports.paymentSuccess = async (req, res) => {
-    res.redirect('http://localhost:3000/payment/success');
+    // res.redirect('http://localhost:3000/payment/success');
+    res.send('success')
 }
 
 module.exports.paymentCancel = async (req, res) => {
-    res.redirect('http://localhost:3000/payment/cancel');
+    // res.redirect('http://localhost:3000/payment/cancel');
+    res.send('cancel')
 }
 
 module.exports.paymentFail = async (req, res) => {
-    res.redirect('http://localhost:3000/payment/fail');
+    // res.redirect('http://localhost:3000/payment/fail');
+    res.send('fail')
 }
