@@ -3,6 +3,8 @@ const {
 } = require('ssl-commerz-node');
 const { Cart } = require('../models/cart');
 const { Profile } = require('../models/profile');
+const { Order } = require('../models/order');
+const { Payment } = require('../models/payment');
 
 module.exports.initPayment = async (req, res) => {
     const payment = new PaymentSession(true, process.env.SSL_COMMERZ_STORE_ID, process.env.SSL_COMMERZ_STORE_PASSWORD);
@@ -78,11 +80,23 @@ module.exports.initPayment = async (req, res) => {
 
     // Initiate Payment and Get session key
     const response = await payment.paymentInit();
+    const order = new Order({cartItems, transaction_id: tran_id, profile, user: userId});
+    if (response.status === 'SUCCESS') {
+        order.sessionKey = response.sessionKey;
+        await order.save();
+    }
     return res.status(200).send(response);
 }
 
 module.exports.ipn = async (req, res) => {
-    console.log(req.body);
+    const payment = new Payment(req.body);
+    const tran_id = payment.tran_id;
+    if(payment.status === 'VALID') {
+        const order = await Order.updateOne({transaction_id: tran_id}, {status: "Complete"});
+        await Cart.deleteMany(order.cartItems);
+    }
+    await payment.save();
+    return res.status(201).send({message: "Payment info save successfully."});
 }
 
 module.exports.paymentSuccess = async (req, res) => {
